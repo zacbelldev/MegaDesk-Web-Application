@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = "Delete an Entry";
+
+    var text = "";
+    var date = "";
+    var journalId = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["Id"].IsEmpty() && Request.QueryString["Id"].IsInt())
+        {
+            journalId = Request.QueryString["ID"];
+            var db = Database.Open("JournalDatabase");
+            var dbCommand = "SELECT * FROM JournalTable WHERE Id = @0";
+            var row = db.QuerySingle(dbCommand, journalId);
+            if (row != null)
+            {
+                text = row.Text;
+                date = Convert.ToString(row.Date);
+            }
+            else
+            {
+                Validation.AddFormError("No entry was found for that ID.");
+            }
+        }
+        else
+        {
+            Validation.AddFormError("No entry was found for that ID.");
+        }
+    }
+
+    if (IsPost && !Request["buttonDelete"].IsEmpty())
+    {
+        journalId = Request.Form["journalId"];
+        var db = Database.Open("JournalDatabase");
+        var deleteCommand = "DELETE FROM JournalTable WHERE Id = @0";
+        db.Execute(deleteCommand, journalId);
+        Response.Redirect("~/ScriptureJournalMain");
+    }
+}
+
+<h2>Delete a Journal Entry</h2>
+@Html.ValidationSummary()
+<p><a href="~/ScriptureJournalMain">Return to journal</a></p>
+
+<form method="post">
+    <fieldset>
+        <legend>Entry Information</legend>
+
+        <p>
+            <span>Date:</span>
+            <span>@date</span>
+        </p>
+
+        <p>
+            <span>Text:</span>
+            <span>@text</span>
+        </p>
+
+        <input type="hidden" name="journalId" value="@journalId" />
+        <p><input type="submit" name="buttonDelete" value="Delete Entry" /></p>
+    </fieldset>
+</form>

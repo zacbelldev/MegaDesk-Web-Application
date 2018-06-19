@@ -1,0 +1,15 @@
+﻿-- Script Date: 6/19/2018 9:02 AM  - ErikEJ.SqlCeScripting version 3.5.2.75
+CREATE TABLE [QuoteTable] (
+  [Id] int IDENTITY (1,1)  NOT NULL
+, [Date] datetime NOT NULL
+, [CustomerName] nvarchar(500)  NOT NULL
+, [Depth] int  NOT NULL
+, [Width] int  NOT NULL
+, [DrawerCount] int  NOT NULL
+, [Material] nvarchar(500)  NOT NULL
+, [RushDays] nvarchar(500)  NOT NULL
+, [Total] int  NOT NULL
+);
+GO
+ALTER TABLE [QuoteTable] ADD CONSTRAINT [PK_QuoteTable] PRIMARY KEY ([Id]);
+GO

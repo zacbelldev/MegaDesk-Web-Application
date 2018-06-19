@@ -1,0 +1,4 @@
+﻿CREATE TABLE [dbo].[QuoteData]
+(
+	[Id] INT NOT NULL PRIMARY KEY
+)
