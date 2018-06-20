@@ -16,17 +16,12 @@
     var grid = new WebGrid(source: selectedData, defaultSort: "Date", rowsPerPage: 5);
 }
 
-<h2>List Scriptures</h2>
+<h2>List Quotes</h2>
 <form method="get">
     <div>
         <label for="searchBook">Search Customer Name:</label>
         <input type="text" name="searchBook" value="@Request.QueryString["searchName"]" />
         <input type="Submit" value="Search Book" /><br />
-    </div>
-    <div>
-        <label for="searchKeyword">Note contains the following:</label>
-        <input type="text" name="searchKeyword" value="@Request.QueryString["searchKeyword"]" />
-        <input type="Submit" value="Search Keyword in Notes" /><br />
     </div>
 </form>
 <div>
@@ -49,5 +44,5 @@
                         )
 </div>
 <p>
-    <a href="~/AddQuote">Add a scripture</a>
+    <a href="~/AddQuote">Add a Quote</a>
 </p>
