@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MegaDesk_Web_Application
+namespace MegaDesk_Web_Application.AppCode
 {
-    class Desk
+    public class Desk
     {
         public int Width { get; set; }
         public int Depth { get; set; }

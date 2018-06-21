@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MegaDesk_Web_Application
+namespace MegaDesk_Web_Application.AppCode
 {
-    class DeskQuote : Desk
+    public class DeskQuote : Desk
     {
         public string CustName { get; set; }
         public DateTime QuoteDate { get; set; }

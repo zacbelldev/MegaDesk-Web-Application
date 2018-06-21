@@ -95,8 +95,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Desk.cs" />
-    <Compile Include="DeskQuote.cs" />
+    <Compile Include="AppCode\Desk.cs" />
+    <Compile Include="AppCode\DeskQuote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
