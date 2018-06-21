@@ -1,71 +1,107 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = "Add a Scripture";
+    Page.Title = "Add a Quote";
 
-    Validation.RequireField("book", "You must enter a book");
-    Validation.RequireField("chapter", "Chapter number is required");
-    Validation.RequireField("verse", "You haven't entered a verse number");
-    Validation.RequireField("text", "You haven't entered the verse text");
-    Validation.RequireField("note", "You haven't entered a note");
-    Validation.Add("chapter", Validator.Integer("Chapter must be an integer"));
-    Validation.Add("verse", Validator.Integer("Verse must be an integer"));
+    // Required fields validation
+    Validation.RequireField("name", "You must enter a customer name");
+    Validation.RequireField("depth", "Depth is required");
+    Validation.RequireField("width", "Width is required");
+    Validation.RequireField("drawerCount", "Drawer Count is required");
 
-    var book = "";
-    var chapter = "";
-    var verse = "";
-    var text = "";
-    var note = "";
+    //Data type validation
+    Validation.Add("depth", Validator.Integer("Depth must be an integer"));
+    Validation.Add("width", Validator.Integer("Width must be an integer"));
+    Validation.Add("drawerCount", Validator.Integer("Width must be an integer"));
+
+    var name = "";
+    var depth = "";
+    var width = "";
+    var drawerCount = "";
+
+    //Get current date and convert to sql server format and as and string
     DateTime myDateTime = DateTime.Now;
     string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
 
     if (IsPost && Validation.IsValid())
     {
-        book = Request.Form["Book"];
-        chapter = Request.Form["Chapter"];
-        verse = Request.Form["Verse"];
-        text = Request.Form["Text"];
-        note = Request.Form["Note"];
+        name = Request.Form["Name"];
+        depth = Request.Form["Depth"];
+        width = Request.Form["Width"];
+        drawerCount = Request.Form["DrawerCount"];
 
-        var db = Database.Open("JournalDatabase");
-        var insertCommand = "INSERT INTO JournalTable (Book, Chapter, Verse, Text, Note, Date) VALUES(@0, @1, @2, @3, @4, @5)";
-        db.Execute(insertCommand, book, chapter, verse, text, note, sqlFormattedDate);
 
-        Response.Redirect("~/ScriptureJournalMain");
+        var db = Database.Open("QuoteDatabase");
+        var insertCommand = "INSERT INTO QuoteTable (Date, CustomerName, Depth, Width, DrawerCount, Material, RushDays, Total) VALUES(@0, @1, @2, @3, @4, @5, @6, @7)";
+        db.Execute(insertCommand, sqlFormattedDate, name, depth, width, drawerCount, material, rushDays, total);
+
+        Response.Redirect("~/Home");
     }
 }
 
 
-<h2>Add a Journal Entry</h2>
+<h2>Add a Quote</h2>
 @Html.ValidationSummary()
 <form method="post">
+    <!--
+    Date.....................DateTime.Now (calculate externally)
+    Customer Name............Input type text
+    Depth....................Input type number (min - , max - )
+    Width....................Input type number (min - , max - )
+    Drawer...................Input type number (min - , max - )
+    Material.................Dropdown
+    RushDays.................Dropdown
+    Total....................Use our classes (calculate externally)
+    -->
     <fieldset>
-        <legend>Journal Information</legend>
+        <legend>Mega Desk Information</legend>
+
+
+
+        <!-- Customer Name............Input type text -->
         <p>
-            <label for="book">Book:</label>
-            <input type="text" name="book" value="@Request.Form["Book"]" />
-            @Html.ValidationMessage("book")
-        </p>
-        <p>
-            <label for="chapter">Chapter:</label>
-            <input type="text" name="chapter" value="@Request.Form["Chapter"]" />
-            @Html.ValidationMessage("chapter")
-        </p>
-        <p>
-            <label for="verse">Verse:</label>
-            <input type="text" name="verse" value="@Request.Form["Verse"]" />
-            @Html.ValidationMessage("verse")
-        </p>
-        <p>
-            <label for="text">Verse Text:</label>
-            <input type="text" name="text" value="@Request.Form["Text"]" />
-            @Html.ValidationMessage("text")
-        </p>
-        <p>
-            <label for="note">Your note:</label>
-            <input type="text" name="note" value="@Request.Form["Note"]" />
-            @Html.ValidationMessage("note")
+            <label for="name">Customer Name:</label>
+            <input type="text" name="name" value="@Request.Form["Name"]" />
+            @Html.ValidationMessage("name")
         </p>
 
-        <p><input type="submit" name="buttonSubmit" value="Add Journal Entry" /></p>
+
+
+        <!-- Depth....................Input type number (min - , max - ) -->
+        <p>
+            <label for="depth">Depth:</label>
+            <input type="number" name="depth" min="100" max="200" value="@Request.Form["Depth"]" />
+            @Html.ValidationMessage("depth")
+        </p>
+
+
+        @*TODO: update min and max...*@
+        <!-- Width....................Input type number (min - , max - ) -->
+        <p>
+            <label for="width">Width:</label>
+            <input type="number" name="width" min="100" max="200" value="@Request.Form["Width"]" />
+            @Html.ValidationMessage("width")
+        </p>
+
+
+
+        @*TODO: update min and max...*@
+        <!-- Drawer....................Input type number (min - , max - ) -->
+        <p>
+            <label for="drawerCount">Drawer Count:</label>
+            <input type="number" name="drawerCount" min="100" max="200" value="@Request.Form["DrawerCount"]" />
+            @Html.ValidationMessage("drawerCount")
+        </p>
+
+
+
+
+        @*TODO: figure this out...*@
+        <!-- Material.................Dropdown -->
+
+
+        @*TODO: figure this out...*@
+        <!-- RushDays.................Dropdown -->
+
+        <p><input type="submit" name="buttonSubmit" value="Add Quote" /></p>
     </fieldset>
 </form>
