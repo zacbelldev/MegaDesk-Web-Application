@@ -1,13 +1,15 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = "Edit an Entry";
+    Page.Title = "Edit a Quote";
 
-    var book = "";
-    var chapter = 0;
-    var verse = 0;
-    var text = "";
-    var note = "";
-    var journalId = "";
+    var quoteId = "";
+    var name = "";
+    var depth = 0;
+    var width = 0;
+    var drawerCount = 0;
+    var material = "";
+    var rushDays = "";
+    var total = "";
 
     DateTime myUpdatedDateTime = DateTime.Now;
     string sqlUpdatedDate = "";
@@ -16,92 +18,103 @@
     {
         if (!Request.QueryString["Id"].IsEmpty() && Request.QueryString["Id"].IsInt())
         {
-            journalId = Request.QueryString["ID"];
-            var db = Database.Open("JournalDatabase");
-            var dbCommand = "SELECT * FROM JournalTable WHERE Id = @0";
-            var row = db.QuerySingle(dbCommand, journalId);
+            quoteId = Request.QueryString["Id"];
+            var db = Database.Open("QuoteDatabase");
+            var dbCommand = "SELECT * FROM QuoteTable WHERE Id = @0";
+            var row = db.QuerySingle(dbCommand, quoteId);
             if (row != null)
             {
-                book = row.Book;
-                chapter = row.Chapter;
-                verse = row.Verse;
-                text = row.Text;
-                note = row.Note;
+                name = row.Name;
+                depth = row.Depth;
+                width = row.Width;
+                drawerCount = row.DrawerCount;
+                material = row.Material;
+                rushDays = row.RushDays;
+                //var total = row.Book;
+
             }
             else
             {
-                Validation.AddFormError("No entry was found for that ID.");
+                Validation.AddFormError("No entry was found for that Id.");
             }
         }
         else
         {
-            Validation.AddFormError("No journal entry was selected.");
+            Validation.AddFormError("No quote was selected.");
         }
     }
 
     if (IsPost)
     {
-        Validation.RequireField("book", "You must enter a book");
-        Validation.RequireField("chapter", "Chapter number is required");
-        Validation.RequireField("verse", "You haven't entered a verse number");
-        Validation.RequireField("text", "You haven't entered the verse text");
-        Validation.RequireField("note", "You haven't entered a note");
-        Validation.RequireField("journalId", "No journal ID was submitted!");
-        Validation.Add("chapter", Validator.Integer("Chapter must be an integer"));
-        Validation.Add("verse", Validator.Integer("Verse must be an integer"));
+        // Required fields validation
+        Validation.RequireField("name", "You must enter a customer name");
+        Validation.RequireField("depth", "Depth is required");
+        Validation.RequireField("width", "Width is required");
+        Validation.RequireField("drawerCount", "Drawer Count is required");
 
-        book = Request.Form["Book"];
-        chapter = Convert.ToInt32(Request.Form["Chapter"]);
-        verse = Convert.ToInt32(Request.Form["Verse"]);
-        text = Request.Form["Text"];
-        note = Request.Form["Note"];
-        journalId = Request.Form["journalId"];
+        //Data type validation
+        Validation.Add("depth", Validator.Integer("Depth must be an integer"));
+        Validation.Add("width", Validator.Integer("Width must be an integer"));
+        Validation.Add("drawerCount", Validator.Integer("Drawer Count must be an integer"));
+
+        name = Request.Form["CustomerName"];
+        depth = Convert.ToInt32(Request.Form["Depth"]);
+        width = Convert.ToInt32(Request.Form["Width"]);
+        drawerCount = Convert.ToInt32(Request.Form["DrawerCount"]);
+        material = Request.Form["Material"];
+        rushDays = Request.Form["RushDays"];
+        quoteId = Request.Form["quoteId"];
 
         if (Validation.IsValid())
         {
             sqlUpdatedDate = myUpdatedDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             var db = Database.Open("JournalDatabase");
-            var updateCommand = "UPDATE JournalTable SET Book=@0, Chapter=@1, Verse=@2, Text=@3, Note=@4, Date=@5 WHERE Id=@6";
-            db.Execute(updateCommand, book, chapter, verse, text, note, sqlUpdatedDate, journalId);
+            var updateCommand = "UPDATE JournalTable SET Date=@0, CustomerName=@1, Depth=@2, Width=@3, DrawerCount=@4, Material=@5, RushDays=@6, Total=@7 WHERE Id=@8";
+            db.Execute(updateCommand, sqlUpdatedDate, name, depth, width, drawerCount, material, rushDays, total);
             Response.Redirect("~/ScriptureJournalMain");
         }
     }
 }
 
-<h2>Edit a Journal Entry</h2>
+<h2>Edit a Quote</h2>
 @Html.ValidationSummary()
 <form method="post">
     <fieldset>
-        <legend>Entry Information</legend>
+        <legend>Quote Information</legend>
 
         <p>
-            <label for="book">Book:</label>
-            <input type="text" name="book" value="@book" />
+            <label for="name">Customer Name:</label>
+            <input type="text" name="name" value="@name" />
         </p>
 
         <p>
-            <label for="chapter">Chapter:</label>
-            <input type="text" name="chapter" value="@chapter" />
+            <label for="depth">Depth:</label>
+            <input type="text" name="depth" value="@depth" />
         </p>
 
         <p>
-            <label for="verse">Verse:</label>
-            <input type="text" name="verse" value="@verse" />
+            <label for="width">Width:</label>
+            <input type="text" name="width" value="@width" />
         </p>
 
         <p>
-            <label for="text">Text:</label>
-            <input type="text" name="text" value="@text" />
+            <label for="drawerCount">Drawer Count:</label>
+            <input type="text" name="drawerCount" value="@drawerCount" />
         </p>
 
         <p>
-            <label for="note">Note:</label>
-            <input type="text" name="note" value="@note" />
+            <label for="material">Material:</label>
+            <input type="text" name="material" value="@material" />
         </p>
 
-        <input type="hidden" name="journalId" value="@journalId" />
+        <p>
+            <label for="rushDays">Rush Days:</label>
+            <input type="text" name="rushDays" value="@rushDays" />
+        </p>
+
+        <input type="hidden" name="journalId" value="@quoteId" />
 
         <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
     </fieldset>
 </form>
-<p><a href="~/ScriptureJournalMain">Return to journal</a></p>
+<p><a href="~/Home">Return to Quotes</a></p>
