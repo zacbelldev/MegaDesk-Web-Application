@@ -10,7 +10,16 @@
     var drawerCount = 0;
     var material = "";
     var rushDays = "";
-    var total = "";
+    var total = 0;
+    var oak = "";
+    var laminate = "";
+    var pine = "";
+    var rosewood = "";
+    var veneer = "";
+    var standard = "";
+    var three = "";
+    var five = "";
+    var seven = "";
 
     DateTime myUpdatedDateTime = DateTime.Now;
     string sqlUpdatedDate = "";
@@ -25,14 +34,47 @@
             var row = db.QuerySingle(dbCommand, quoteId);
             if (row != null)
             {
-                name = row.Name;
+                name = row.CustomerName;
                 depth = row.Depth;
                 width = row.Width;
                 drawerCount = row.DrawerCount;
                 material = row.Material;
                 rushDays = row.RushDays;
-                //var total = row.Book;
 
+                switch (material)
+                {
+                    case "Oak":
+                        oak = "selected";
+                        break;
+                    case "Laminate":
+                        laminate = "selected";
+                        break;
+                    case "Pine":
+                        pine = "selected";
+                        break;
+                    case "Rosewood":
+                        rosewood = "selected";
+                        break;
+                    case "Veneer":
+                        veneer = "selected";
+                        break;
+                }
+
+                switch (rushDays)
+                {
+                    case "No Rush":
+                        standard = "selected";
+                        break;
+                    case "Three":
+                        three = "selected";
+                        break;
+                    case "Five":
+                        five = "selected";
+                        break;
+                    case "Seven":
+                        seven = "selected";
+                        break;
+                }
             }
             else
             {
@@ -58,7 +100,7 @@
         Validation.Add("width", Validator.Integer("Width must be an integer"));
         Validation.Add("drawerCount", Validator.Integer("Drawer Count must be an integer"));
 
-        name = Request.Form["CustomerName"];
+        name = Request.Form["Name"];
         depth = Convert.ToInt32(Request.Form["Depth"]);
         width = Convert.ToInt32(Request.Form["Width"]);
         drawerCount = Convert.ToInt32(Request.Form["DrawerCount"]);
@@ -72,13 +114,13 @@
         if (Validation.IsValid())
         {
             sqlUpdatedDate = myUpdatedDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            var db = Database.Open("JournalDatabase");
-            var updateCommand = "UPDATE JournalTable SET Date=@0, CustomerName=@1, Depth=@2, Width=@3, DrawerCount=@4, Material=@5, RushDays=@6, Total=@7 WHERE Id=@8";
-            db.Execute(updateCommand, sqlUpdatedDate, name, depth, width, drawerCount, material, rushDays, total);
-            Response.Redirect("~/ScriptureJournalMain");
+            var db = Database.Open("QuoteDatabase");
+            var updateCommand = "UPDATE QuoteTable SET Date=@0, CustomerName=@1, Depth=@2, Width=@3, DrawerCount=@4, Material=@5, RushDays=@6, Total=@7 WHERE Id=@8";
+            db.Execute(updateCommand, sqlUpdatedDate, name, depth, width, drawerCount, material, rushDays, total, quoteId);
+            Response.Redirect("~/Home");
         }
     }
-}
+    }
 
 <h2>Edit a Quote</h2>
 @Html.ValidationSummary()
@@ -113,25 +155,25 @@
         <p>
             <label for="material">Material:</label>
             <select id="material" name="material">
-                <option selected="selected">Oak</option>
-                <option>Laminate</option>
-                <option>Pine</option>
-                <option>Rosewood</option>
-                <option>Veneer</option>
+                <option @oak>Oak</option>
+                <option @laminate>Laminate</option>
+                <option @pine>Pine</option>
+                <option @rosewood>Rosewood</option>
+                <option @veneer>Veneer</option>
             </select>
         </p>
 
         <p>
             <label for="rushDays">Rush Days:</label>
             <select id="rushDays" name="rushDays">
-                <option selected="selected">No Rush</option>
-                <option>Three</option>
-                <option>Five</option>
-                <option>Seven</option>
+                <option @standard>No Rush</option>
+                <option @three>Three</option>
+                <option @five>Five</option>
+                <option @seven>Seven</option>
             </select>
         </p>
 
-        <input type="hidden" name="journalId" value="@quoteId" />
+        <input type="hidden" name="quoteId" value="@quoteId" />
 
         <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
     </fieldset>
