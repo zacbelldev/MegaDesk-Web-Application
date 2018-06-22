@@ -3,7 +3,7 @@
     Page.Title = "Delete a Quote";
 
     var name = "";
-    var total = "";
+    var total = 0;
     var quoteId = "";
 
     if (!IsPost)
@@ -16,7 +16,7 @@
             var row = db.QuerySingle(dbCommand, quoteId);
             if (row != null)
             {
-                name = row.Text;
+                name = row.CustomerName;
                 total = row.Total;
             }
             else
@@ -55,7 +55,7 @@
 
         <p>
             <span>Total:</span>
-            <span>@total</span>
+            <span>$@total</span>
         </p>
 
         <input type="hidden" name="quoteId" value="@quoteId" />

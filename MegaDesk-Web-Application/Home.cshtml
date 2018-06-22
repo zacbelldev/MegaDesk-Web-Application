@@ -8,8 +8,8 @@
 
     if (!Request.QueryString["searchName"].IsEmpty())
     {
-        selectCommand = "SELECT * FROM QuoteTable WHERE CustomerName = @0";
-        searchTerm = Request.QueryString["searchName"];
+        selectCommand = "SELECT * FROM QuoteTable WHERE CustomerName LIKE @0";
+        searchTerm = "%" + Request["searchName"] + "%";
     }
 
     var selectedData = db.Query(selectCommand, searchTerm);
@@ -35,7 +35,7 @@
             grid.Column("CustomerName"),
             grid.Column("Depth"),
             grid.Column("Width"),
-            grid.Column("Drawer"),
+            grid.Column("DrawerCount"),
             grid.Column("Material"),
             grid.Column("RushDays"),
             grid.Column("Total"),
