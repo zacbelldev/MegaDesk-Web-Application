@@ -10,15 +10,7 @@ namespace MegaDesk_Web_Application.AppCode
     {
         public string CustName { get; set; }
         public DateTime QuoteDate { get; set; }
-        //public int BasePrice { get; set; }
-        //public int SurfaceCost { get; set; }
-        public enum RushDays
-        {
-            ThreeDays,
-            FiveDays,
-            SevenDays,
-            Standard
-        }
+        public string RushDays { get; set; }
 
         public int CalcTotalCost(int Width, int Depth, int NumOfDrawers, string RushDays, string Surface)
         {
@@ -59,7 +51,7 @@ namespace MegaDesk_Web_Application.AppCode
             int rushCost = 0;
             switch (RushDays)
             {
-                case "ThreeDays":
+                case "Three":
                     if (size < 1000)
                     {
                         rushCost = 60;
@@ -73,7 +65,7 @@ namespace MegaDesk_Web_Application.AppCode
                         rushCost = 80;
                     }
                     break;
-                case "FiveDays":
+                case "Five":
                     if (size < 1000)
                     {
                         rushCost = 40;
@@ -87,7 +79,7 @@ namespace MegaDesk_Web_Application.AppCode
                         rushCost = 60;
                     }
                     break;
-                case "SevenDays":
+                case "Seven":
                     if (size < 1000)
                     {
                         rushCost = 30;
@@ -101,7 +93,7 @@ namespace MegaDesk_Web_Application.AppCode
                         rushCost = 40;
                     }
                     break;
-                case "Standard":
+                case "No Rush":
                     rushCost = 0;
                     break;
             }

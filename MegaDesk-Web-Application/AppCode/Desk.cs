@@ -11,17 +11,5 @@ namespace MegaDesk_Web_Application.AppCode
         public int Width { get; set; }
         public int Depth { get; set; }
         public int NumOfDrawers { get; set; }
-        public enum Surface
-        {
-            Oak,
-            Laminate,
-            Pine,
-            Rosewood,
-            Veneer
-        }
-        public Surface SurfaceMaterial;
     }
 }
-
-
-
