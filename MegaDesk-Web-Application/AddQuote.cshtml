@@ -18,6 +18,9 @@
     var depth = "";
     var width = "";
     var drawerCount = "";
+    var material = "";
+    var rushDays = "";
+    var total = "";
 
     //Get current date and convert to sql server format and as and string
     DateTime myDateTime = DateTime.Now;
@@ -29,7 +32,10 @@
         depth = Request.Form["Depth"];
         width = Request.Form["Width"];
         drawerCount = Request.Form["DrawerCount"];
+        material = Request.Form["Material"];
+        rushDays = Request.Form["RushDays"];
         DeskQuote quote = new DeskQuote();
+        // TODO: calculate total and store in "total" variable
 
         var db = Database.Open("QuoteDatabase");
         var insertCommand = "INSERT INTO QuoteTable (Date, CustomerName, Depth, Width, DrawerCount, Material, RushDays, Total) VALUES(@0, @1, @2, @3, @4, @5, @6, @7)";
@@ -56,52 +62,50 @@
     <fieldset>
         <legend>Mega Desk Information</legend>
 
-
-
-        <!-- Customer Name............Input type text -->
         <p>
             <label for="name">Customer Name:</label>
-            <input type="text" name="name" value="@Request.Form["Name"]" />
+            <input type="text" id="name" name="name" value="@Request.Form["Name"]" />
             @Html.ValidationMessage("name")
         </p>
 
-
-
-        <!-- Depth....................Input type number (min - , max - ) -->
         <p>
             <label for="depth">Depth:</label>
-            <input type="number" name="depth" min="100" max="200" value="@Request.Form["Depth"]" />
+            <input type="number" id="depth" name="depth" min="12" max="48" value="@Request.Form["Depth"]" />
             @Html.ValidationMessage("depth")
         </p>
 
-
-        @*TODO: update min and max...*@
-        <!-- Width....................Input type number (min - , max - ) -->
         <p>
             <label for="width">Width:</label>
-            <input type="number" name="width" min="100" max="200" value="@Request.Form["Width"]" />
+            <input type="number" id="width" name="width" min="24" max="96" value="@Request.Form["Width"]" />
             @Html.ValidationMessage("width")
         </p>
 
-
-
-        @*TODO: update min and max...*@
-        <!-- Drawer....................Input type number (min - , max - ) -->
         <p>
             <label for="drawerCount">Drawer Count:</label>
-            <input type="number" name="drawerCount" min="100" max="200" value="@Request.Form["DrawerCount"]" />
+            <input type="number" id="drawerCount" name="drawerCount" min="0" max="7" value="@Request.Form["DrawerCount"]" />
             @Html.ValidationMessage("drawerCount")
         </p>
 
+        <p>
+            <label for="material">Material:</label>
+            <select id="material" name="material">
+                <option selected="selected">Oak</option>
+                <option>Laminate</option>
+                <option>Pine</option>
+                <option>Rosewood</option>
+                <option>Veneer</option>
+            </select>
+        </p>
 
-
-
-        @*TODO: figure this out...*@
-        <!-- Material.................Dropdown -->
-
-
-        @*TODO: figure this out...*@
-        <!-- RushDays.................Dropdown -->
+        <p>
+            <label for="rushDays">Rush Days:</label>
+            <select id="rushDays" name="rushDays">
+                <option selected="selected">No Rush</option>
+                <option>Three</option>
+                <option>Five</option>
+                <option>Seven</option>
+            </select>
+        </p>
 
         <p><input type="submit" name="buttonSubmit" value="Add Quote" /></p>
     </fieldset>
