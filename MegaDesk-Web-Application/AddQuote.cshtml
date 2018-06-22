@@ -78,13 +78,19 @@
 
         <p>
             <label for="material">Material:</label>
-            <select id="material" name="material">
+            <select id="material" name="material" onchange="swapMaterialImage()">
                 <option>Oak</option>
                 <option>Laminate</option>
                 <option>Pine</option>
                 <option>Rosewood</option>
                 <option>Veneer</option>
             </select>
+           <script>
+               function swapMaterialImage() {
+                   var current = document.getElementById("material").value.toLowerCase();
+                   document.getElementById("material").style.backgroundImage = "url(images/" + current + ".jpg)";
+               }
+           </script>
         </p>
 
         <p>

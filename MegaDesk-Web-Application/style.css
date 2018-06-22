@@ -32,7 +32,7 @@ h2 {
 #header {
     padding: 8px;
     width: 80%;
-    background-color: Salmon;
+    background-color: teal;
     color: White;
 }
 
@@ -77,4 +77,27 @@ span.caption {
 
 span.dataDisplay {
     font-weight: bold;
+}
+
+#material {
+    width: 200px;
+    height: 40px;
+    background-image: url(images/oak.jpg);
+}
+
+select, input {
+    background-color: teal;
+    color: #fff;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+input {
+    padding-left: 5px;
+}
+
+input[type=submit] {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
 }
