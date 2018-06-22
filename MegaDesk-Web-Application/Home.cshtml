@@ -19,9 +19,9 @@
 <h2>List Quotes</h2>
 <form method="get">
     <div>
-        <label for="searchBook">Search Customer Name:</label>
-        <input type="text" name="searchBook" value="@Request.QueryString["searchName"]" />
-        <input type="Submit" value="Search Book" /><br />
+        <label for="searchName">Search by Customer Name:</label>
+        <input type="text" name="searchName" value="@Request.QueryString["searchName"]" />
+        <input type="Submit" value="Search By Name" /><br />
     </div>
 </form>
 <div>
@@ -32,7 +32,7 @@
         columns: grid.Columns(
             grid.Column(format: @<a href="~/EditQuote?id=@item.Id">Edit</a>),
             grid.Column("Date"),
-            grid.Column("Customer Name"),
+            grid.Column("CustomerName"),
             grid.Column("Depth"),
             grid.Column("Width"),
             grid.Column("Drawer"),

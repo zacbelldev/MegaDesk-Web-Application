@@ -10,8 +10,8 @@ namespace MegaDesk_Web_Application.AppCode
     {
         public string CustName { get; set; }
         public DateTime QuoteDate { get; set; }
-        //public decimal BasePrice { get; set; }
-        //public decimal SurfaceCost { get; set; }
+        //public int BasePrice { get; set; }
+        //public int SurfaceCost { get; set; }
         public enum RushDays
         {
             ThreeDays,
@@ -20,94 +20,94 @@ namespace MegaDesk_Web_Application.AppCode
             Standard
         }
 
-        public decimal CalcTotalCost(int Width, int Depth, int NumOfDrawers, string RushDays, string Surface)
+        public int CalcTotalCost(int Width, int Depth, int NumOfDrawers, string RushDays, string Surface)
         {
             //Calc Surface Price
-            decimal basePrice = 200.00M;
+            int basePrice = 200;
             int size = Width * Depth;
-            decimal potentialLargeSurfaceCost = 0.00M;
+            int potentialLargeSurfaceCost = 0;
             if (size > 1000)
             {
-                potentialLargeSurfaceCost = (size - 1000.00M);
+                potentialLargeSurfaceCost = (size - 1000);
             }
-            decimal surfacePrice = basePrice + potentialLargeSurfaceCost;
+            int surfacePrice = basePrice + potentialLargeSurfaceCost;
 
             // Calc Line Cost
-            decimal materialCost = 0.00M;
+            int materialCost = 0;
             switch (Surface)
             {
                 case "Oak":
-                    materialCost = 200.00M;
+                    materialCost = 200;
                     break;
                 case "Laminate":
-                    materialCost = 100.00M;
+                    materialCost = 100;
                     break;
                 case "Pine":
-                    materialCost = 50.00M;
+                    materialCost = 50;
                     break;
                 case "Rosewood":
-                    materialCost = 300.00M;
+                    materialCost = 300;
                     break;
                 case "Veneer":
-                    materialCost = 125.00M;
+                    materialCost = 125;
                     break;
             }
-            decimal drawerCost = NumOfDrawers * 50.00M;
-            decimal lineCost = drawerCost + materialCost;
+            int drawerCost = NumOfDrawers * 50;
+            int lineCost = drawerCost + materialCost;
 
             //Calc Rush Cost
-            decimal rushCost = 0.00M;
+            int rushCost = 0;
             switch (RushDays)
             {
                 case "ThreeDays":
                     if (size < 1000)
                     {
-                        rushCost = 60.00M;
+                        rushCost = 60;
                     }
                     if (size < 2000)
                     {
-                        rushCost = 70.00M;
+                        rushCost = 70;
                     }
                     else
                     {
-                        rushCost = 80.00M;
+                        rushCost = 80;
                     }
                     break;
                 case "FiveDays":
                     if (size < 1000)
                     {
-                        rushCost = 40.00M;
+                        rushCost = 40;
                     }
                     if (size < 2000)
                     {
-                        rushCost = 50.00M;
+                        rushCost = 50;
                     }
                     else
                     {
-                        rushCost = 60.00M;
+                        rushCost = 60;
                     }
                     break;
                 case "SevenDays":
                     if (size < 1000)
                     {
-                        rushCost = 30.00M;
+                        rushCost = 30;
                     }
                     if (size < 2000)
                     {
-                        rushCost = 35.00M;
+                        rushCost = 35;
                     }
                     else
                     {
-                        rushCost = 40.00M;
+                        rushCost = 40;
                     }
                     break;
                 case "Standard":
-                    rushCost = 0.00M;
+                    rushCost = 0;
                     break;
             }
 
             //Add it all up together
-            decimal totalCost = surfacePrice + lineCost + rushCost;
+            int totalCost = surfacePrice + lineCost + rushCost;
             return totalCost;
         }
     }

@@ -15,12 +15,12 @@
     Validation.Add("drawerCount", Validator.Integer("Drawer Count must be an integer"));
 
     var name = "";
-    var depth = "";
-    var width = "";
-    var drawerCount = "";
+    var depth = 0;
+    var width = 0;
+    var drawerCount = 0;
     var material = "";
     var rushDays = "";
-    var total = "";
+    var total = 0;
 
     //Get current date and convert to sql server format and as and string
     DateTime myDateTime = DateTime.Now;
@@ -29,13 +29,13 @@
     if (IsPost && Validation.IsValid())
     {
         name = Request.Form["Name"];
-        depth = Request.Form["Depth"];
-        width = Request.Form["Width"];
-        drawerCount = Request.Form["DrawerCount"];
+        depth = Convert.ToInt32(Request.Form["Depth"]);
+        width = Convert.ToInt32(Request.Form["Width"]);
+        drawerCount = Convert.ToInt32(Request.Form["DrawerCount"]);
         material = Request.Form["Material"];
         rushDays = Request.Form["RushDays"];
         DeskQuote quote = new DeskQuote();
-        // TODO: calculate total and store in "total" variable
+        total = quote.CalcTotalCost(width, depth, drawerCount, rushDays, material);
 
         var db = Database.Open("QuoteDatabase");
         var insertCommand = "INSERT INTO QuoteTable (Date, CustomerName, Depth, Width, DrawerCount, Material, RushDays, Total) VALUES(@0, @1, @2, @3, @4, @5, @6, @7)";
@@ -49,16 +49,6 @@
 <h2>Add a Quote</h2>
 @Html.ValidationSummary()
 <form method="post">
-    <!--
-    Date.....................DateTime.Now (calculate externally)
-    Customer Name............Input type text
-    Depth....................Input type number (min - , max - )
-    Width....................Input type number (min - , max - )
-    Drawer...................Input type number (min - , max - )
-    Material.................Dropdown
-    RushDays.................Dropdown
-    Total....................Use our classes (calculate externally)
-    -->
     <fieldset>
         <legend>Mega Desk Information</legend>
 
