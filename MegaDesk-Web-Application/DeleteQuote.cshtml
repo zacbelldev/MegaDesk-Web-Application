@@ -1,64 +1,64 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = "Delete an Entry";
+    Page.Title = "Delete a Quote";
 
-    var text = "";
-    var date = "";
-    var journalId = "";
+    var name = "";
+    var total = "";
+    var quoteId = "";
 
     if (!IsPost)
     {
         if (!Request.QueryString["Id"].IsEmpty() && Request.QueryString["Id"].IsInt())
         {
-            journalId = Request.QueryString["ID"];
-            var db = Database.Open("JournalDatabase");
-            var dbCommand = "SELECT * FROM JournalTable WHERE Id = @0";
-            var row = db.QuerySingle(dbCommand, journalId);
+            quoteId = Request.QueryString["Id"];
+            var db = Database.Open("QuoteDatabase");
+            var dbCommand = "SELECT * FROM QuoteTable WHERE Id = @0";
+            var row = db.QuerySingle(dbCommand, quoteId);
             if (row != null)
             {
-                text = row.Text;
-                date = Convert.ToString(row.Date);
+                name = row.Text;
+                total = row.Total;
             }
             else
             {
-                Validation.AddFormError("No entry was found for that ID.");
+                Validation.AddFormError("No quote was found for that ID.");
             }
         }
         else
         {
-            Validation.AddFormError("No entry was found for that ID.");
+            Validation.AddFormError("No quote was found for that ID.");
         }
     }
 
     if (IsPost && !Request["buttonDelete"].IsEmpty())
     {
-        journalId = Request.Form["journalId"];
-        var db = Database.Open("JournalDatabase");
-        var deleteCommand = "DELETE FROM JournalTable WHERE Id = @0";
-        db.Execute(deleteCommand, journalId);
-        Response.Redirect("~/ScriptureJournalMain");
+        quoteId = Request.Form["quoteId"];
+        var db = Database.Open("QuoteDatabase");
+        var deleteCommand = "DELETE FROM QuoteTable WHERE Id = @0";
+        db.Execute(deleteCommand, quoteId);
+        Response.Redirect("~/Home");
     }
 }
 
-<h2>Delete a Journal Entry</h2>
+<h2>Delete a Quote</h2>
 @Html.ValidationSummary()
-<p><a href="~/ScriptureJournalMain">Return to journal</a></p>
+<p><a href="~/Home">Return to Quotes</a></p>
 
 <form method="post">
     <fieldset>
-        <legend>Entry Information</legend>
+        <legend>Quote Information</legend>
 
         <p>
-            <span>Date:</span>
-            <span>@date</span>
+            <span>Name:</span>
+            <span>@name</span>
         </p>
 
         <p>
-            <span>Text:</span>
-            <span>@text</span>
+            <span>Total:</span>
+            <span>@total</span>
         </p>
 
-        <input type="hidden" name="journalId" value="@journalId" />
-        <p><input type="submit" name="buttonDelete" value="Delete Entry" /></p>
+        <input type="hidden" name="quoteId" value="@quoteId" />
+        <p><input type="submit" name="buttonDelete" value="Delete Quote" /></p>
     </fieldset>
 </form>
