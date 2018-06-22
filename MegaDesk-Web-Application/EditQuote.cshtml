@@ -1,4 +1,5 @@
-﻿@{
+﻿@using MegaDesk_Web_Application.AppCode;
+@{
     Layout = "~/_Layout.cshtml";
     Page.Title = "Edit a Quote";
 
@@ -65,6 +66,9 @@
         rushDays = Request.Form["RushDays"];
         quoteId = Request.Form["quoteId"];
 
+        DeskQuote quote = new DeskQuote();
+        total = quote.CalcTotalCost(width, depth, drawerCount, rushDays, material);
+
         if (Validation.IsValid())
         {
             sqlUpdatedDate = myUpdatedDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -84,32 +88,47 @@
 
         <p>
             <label for="name">Customer Name:</label>
-            <input type="text" name="name" value="@name" />
+            <input type="text" id="name" name="name" value="@name" />
+            @Html.ValidationMessage("name")
         </p>
 
         <p>
             <label for="depth">Depth:</label>
-            <input type="text" name="depth" value="@depth" />
+            <input type="number" id="depth" name="depth" min="12" max="48" value="@depth" />
+            @Html.ValidationMessage("depth")
         </p>
 
         <p>
             <label for="width">Width:</label>
-            <input type="text" name="width" value="@width" />
+            <input type="number" id="width" name="width" min="24" max="96" value="@width" />
+            @Html.ValidationMessage("width")
         </p>
 
         <p>
             <label for="drawerCount">Drawer Count:</label>
-            <input type="text" name="drawerCount" value="@drawerCount" />
+            <input type="number" id="drawerCount" name="drawerCount" min="0" max="7" value="@drawerCount" />
+            @Html.ValidationMessage("drawerCount")
         </p>
 
         <p>
             <label for="material">Material:</label>
-            <input type="text" name="material" value="@material" />
+            <select id="material" name="material">
+                <option selected="selected">Oak</option>
+                <option>Laminate</option>
+                <option>Pine</option>
+                <option>Rosewood</option>
+                <option>Veneer</option>
+            </select>
         </p>
 
         <p>
             <label for="rushDays">Rush Days:</label>
-            <input type="text" name="rushDays" value="@rushDays" />
+            <select id="rushDays" name="rushDays">
+                <option selected="selected">No Rush</option>
+                <option>Three</option>
+                <option>Five</option>
+                <option>Seven</option>
+            </select>
         </p>
 
         <input type="hidden" name="journalId" value="@quoteId" />
